@@ -355,3 +355,10 @@ Trying again in 4.00 seconds...
 [2017-05-11 15:43:20,749: INFO/MainProcess] Received task: tasks.login.login_task[74267157-79fc-411f-b725-f8e121d7abe1]
 [2017-05-11 15:43:22,429: INFO/Worker-1] 本次登陆账号为:13338841509
 [2017-05-11 15:43:22,429: INFO/MainProcess] Task tasks.login.login_task[74267157-79fc-411f-b725-f8e121d7abe1] succeeded in 1.6869999999980791s: None
+[2017-05-11 16:59:11,081: INFO/MainProcess] Connected to redis://127.0.0.1:6379/5
+[2017-05-11 16:59:11,092: INFO/MainProcess] mingle: searching for neighbors
+[2017-05-11 16:59:12,099: INFO/MainProcess] mingle: all alone
+[2017-05-11 16:59:12,109: WARNING/MainProcess] celery@LAPTOP-EIDRP1PN ready.
+[2017-05-11 16:59:32,559: INFO/MainProcess] Received task: tasks.login.login_task[13e10b47-f4b5-4a67-bc06-78a034742f63]
+[2017-05-11 16:59:34,096: INFO/Worker-1] 本次登陆账号为:13338841509
+[2017-05-11 16:59:34,099: INFO/MainProcess] Task tasks.login.login_task[13e10b47-f4b5-4a67-bc06-78a034742f63] succeeded in 1.5470000000022992s: None
