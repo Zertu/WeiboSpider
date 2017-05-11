@@ -9,7 +9,7 @@ redis_args = get_redis_args()
 
 class Cookies(object):
     rd_con = redis.StrictRedis(host=redis_args.get('host'), port=redis_args.get('port'),
-                               password=redis_args.get('password'), db=redis_args.get('cookies'))
+                                db=redis_args.get('cookies'))
 
     @classmethod
     def store_cookies(cls, name, cookies):
