@@ -1,6 +1,0 @@
-# Created by .ignore support plugin (hsz.mobi)
-test.py
-.idea
-__pycache__/
-logs/weibo.log
-celerybeat-schedule.db
