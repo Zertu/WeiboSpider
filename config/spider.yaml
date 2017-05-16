@@ -3,16 +3,11 @@ time_out: 200   # 设置抓取和存储一个用户资料超时时间
 min_crawl_interal: 8 # 页面请求最小间隔
 max_crawl_interal: 11 # 页面请求最大间隔
 excp_interal: 5*60 # 请求异常的时候睡眠的时间
-<<<<<<< HEAD
-max_repost_page: 30  # 转发信息最多抓取多少页
-max_search_page: 50 # 搜索最多抓多少页
-=======
 # TODO 除了可以指定抓取页数以外，也可以不指定抓取页数，就默认抓取全部
 max_search_page: 30 # 搜索最多抓多少页
 max_home_page: 35 # 主页微博最多抓取页数
 max_comment_page: 2000 # 每条微博最大抓取的评论页数（注意不是评论数）
 max_repost_page: 30  # 转发信息最多抓取多少页
->>>>>>> ad88f497be6c9466d5248bbfba9b735324e5658b
 max_retries: 5 # 抓取失败重试次数
 
 
@@ -28,15 +23,6 @@ db:
 redis:
     host: 127.0.0.1
     port: 6379
-<<<<<<< HEAD
-    password: 
-    cookies: 1
-    urls: 2
-
-# celery调度的blocker和backend
-brocker: redis://127.0.0.1/5
-backend: redis://127.0.0.1/6
-=======
     password: ''
     cookies: 1 # 登录需要使用的cookies
     urls: 2 # 抓取过的url
@@ -47,4 +33,3 @@ backend: redis://127.0.0.1/6
 
 
 
->>>>>>> ad88f497be6c9466d5248bbfba9b735324e5658b
