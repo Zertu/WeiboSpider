@@ -134,7 +134,7 @@ class TestWeiboSpider(unittest.TestCase):
         """
         from db.search_words import get_search_keywords
         rs = get_search_keywords()
-        self.assertEqual(len(rs), 5)
+        self.assertEqual(len(rs), 10)
 
     def test_add_search_cont(self):
         """
@@ -155,6 +155,67 @@ class TestWeiboSpider(unittest.TestCase):
         """
         from tasks.search import search_keyword
         search_keyword('陈羽凡公司发文')
+
+    def test_get_home_page_right(self):
+        """
+        测试主页右边部分（即微博数据部分）是否可以正常解析
+        :return: 
+        """
+        from page_parse import home
+        with open('tests/enterprisehome.html', encoding='utf-8') as f:
+            html = f.read()
+        wbcounts = home.get_wbdata_fromweb(html)
+        self.assertEqual(len(wbcounts), 15)
+
+        with open('tests/personhome.html', encoding='utf-8') as f:
+            html = f.read()
+        wbcounts = home.get_wbdata_fromweb(html)
+        print(wbcounts)
+        self.assertEqual(len(wbcounts), 15)
+
+    def test_ajax_home_page_data(self):
+        """
+        测试通过ajax返回的主页数据是否可以正常解析
+        :return: 
+        """
+        from page_parse import home
+        with open('tests/asyncpersonhome.html', encoding='utf-8') as f:
+            html = f.read()
+        datas = home.get_home_wbdata_byajax(html)
+        self.assertEqual(len(datas), 15)
+
+    def test_get_total_home_page(self):
+        """
+        测试获取主页页数
+        :return: 
+        """
+        from page_parse import home
+        with open('tests/asyncpersonhome.html', encoding='utf-8') as f:
+            html = f.read()
+        num = home.get_total_page(html)
+        self.assertEqual(num, 18)
+
+    def test_parse_comment_page(self):
+        """
+        测试对评论页的解析
+        :return: 
+        """
+        from page_parse import comment
+        with open('tests/comment.html', encoding='utf-8') as f:
+            html = f.read()
+        comment_list = comment.get_comment_list(html, '1123331211')
+        self.assertEqual(len(comment_list), 19)
+
+    def test_get_total_comment_page(self):
+        """
+        测试获取所有评论数
+        :return: 
+        """
+        from page_parse import comment
+        with open('tests/comment.html', encoding='utf-8') as f:
+            html = f.read()
+        total_page = comment.get_total_page(html)
+        self.assertEqual(total_page, 227)
 
 if __name__ == '__main__':
     unittest.main()

@@ -44,6 +44,7 @@ class SeedIds(Base):
     uid = Column(String, unique=True)
     is_crawled = Column(INTEGER, default=0)
     other_crawled = Column(INTEGER, default=0)
+    home_crawled = Column(INTEGER, default=0)
 
 
 class KeyWords(Base):
@@ -69,6 +70,7 @@ class WeiboData(Base):
     device = Column(String(200), default='')
     weibo_url = Column(String(300))
     create_time = Column(String(200))
+    comment_crawled = Column(INTEGER, default=0)
 
 
 class KeywordsWbdata(Base):
@@ -79,4 +81,15 @@ class KeywordsWbdata(Base):
     wb_id = Column(String(200))
 
 
+class WeiboComment(Base):
+    # 微博评论表
+    __tablename__ = 'weibo_comment'
+    id = Column(INTEGER, primary_key=True, autoincrement=True)
+    comment_id = Column(String(50))
+    comment_cont = Column(String(5000))
+    weibo_id = Column(String(200))
+    user_id = Column(String(20))
+    create_time = Column(String(200))
 
+    def __repr__(self):
+        return 'weibo_id:{},comment_id:{},comment_cont:{}'.format(self.weibo_id, self.comment_id, self.comment_cont)

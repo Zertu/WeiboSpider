@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from bs4 import BeautifulSoup
-from decorator.decorators import parse_decorator
+from decorators.decorator import parse_decorator
 
 
 @parse_decorator(3)
@@ -32,7 +32,6 @@ def is_403(html):
         else:
             return False
     else:
-        print('检查是否存在soup.title和soup.title.text')
         return False
 
 

@@ -1,15 +1,9 @@
 # coding:utf-8
+from sqlalchemy import text
 from db.basic_db import db_session
 from db.models import WeiboData
-from decorator.decorators import db_commit_decorator
-
-
-@db_commit_decorator
-def insert_weibo_datas(weibo_datas):
-    # 批量插入，遇到重复则跳过
-    dict_weibo_datas = [weibo_data.__dict__ for weibo_data in weibo_datas]
-    db_session.execute(WeiboData.__table__.insert().prefix_with('IGNORE'), dict_weibo_datas)
-    db_session.commit()
+from pymysql.err import IntegrityError
+from decorators.decorator import db_commit_decorator
 
 
 @db_commit_decorator
@@ -25,3 +19,36 @@ def get_wb_by_mid(mid):
     :return: 
     """
     return db_session.query(WeiboData).filter(WeiboData.weibo_id == mid).first()
+
+
+@db_commit_decorator
+def insert_weibo_datas(weibo_datas):
+    # 批量插入，如果重复那么就单个插入
+    try:
+        db_session.add_all(weibo_datas)
+    except IntegrityError:
+        for data in weibo_datas:
+            r = get_wb_by_mid(data.weibo_id)
+            if r:
+                continue
+            insert_weibo_data(data)
+    finally:
+        db_session.commit()
+
+
+@db_commit_decorator
+def set_weibo_comment_crawled(mid):
+    """
+    如果存在该微博，那么就将comment_crawled字段设置为1;不存在该微博，就不做任何操作
+    :param mid: 
+    :return: 
+    """
+    weibo_data = get_wb_by_mid(mid)
+    if weibo_data:
+        weibo_data.comment_crawled = 1
+        db_session.commit()
+
+
+@db_commit_decorator
+def get_weibo_comment_not_crawled():
+    return db_session.query(WeiboData.weibo_id).filter(text('comment_crawled=0')).all()

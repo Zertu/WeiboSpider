@@ -2,11 +2,23 @@
 from sqlalchemy import text
 from db.basic_db import db_session
 from db.models import SeedIds
-from decorator.decorators import db_commit_decorator
+from decorators.decorator import db_commit_decorator
 
 
 def get_seed_ids():
+    """
+    获取所有个人信息需要被抓取的用户id
+    :return: 
+    """
     return db_session.query(SeedIds.uid).filter(text('is_crawled=0')).all()
+
+
+def get_home_ids():
+    """
+    获取所有主页需要被抓取的用户id
+    :return: 
+    """
+    return db_session.query(SeedIds.uid).filter(text('home_crawled=0')).all()
 
 
 @db_commit_decorator
@@ -47,8 +59,24 @@ def set_seed_other_crawled(uid):
     """
     seed = get_seed_by_id(uid)
     if seed is None:
-        seed = SeedIds(uid=uid, is_crawled=1, other_crawled=1)
+        seed = SeedIds(uid=uid, is_crawled=1, other_crawled=1, home_crawled=1)
         db_session.add(seed)
     else:
         seed.other_crawled = 1
+    db_session.commit()
+
+
+@db_commit_decorator
+def set_seed_home_crawled(uid):
+    """
+    这里适配了直接指定uid和从数据库seed_ids表中读uid的情况
+    :param uid: 用户id
+    :return: None
+    """
+    seed = get_seed_by_id(uid)
+    if seed is None:
+        seed = SeedIds(uid=uid, is_crawled=0, other_crawled=0, home_crawled=1)
+        db_session.add(seed)
+    else:
+        seed.home_crawled = 1
     db_session.commit()

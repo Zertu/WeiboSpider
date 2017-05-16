@@ -3,7 +3,7 @@
 import re
 import json
 from bs4 import BeautifulSoup
-from decorator.decorators import parse_decorator
+from decorators.decorator import parse_decorator
 from logger.log import parser
 
 
@@ -25,7 +25,7 @@ def get_username(html):
 def get_userdomain(html):
     """
     :param html:
-    :return:用户类型，并不是用户类的那个domain(历史原因，那个类的属性名我还没改...)
+    :return:用户类型
     """
     pattern = re.compile(r'\$CONFIG\[\'domain\'\]=\'(.*)\';')
     m = pattern.search(html)
@@ -43,6 +43,7 @@ def _get_statushtml(html):
             m = pattern.search(script.string)
             if m and 'pl.content.weiboDetail.index' in script.string:
                 all_info = m.group(1)
+                # TODO 留意这里可能发生异常
                 cont = json.loads(all_info)['html']
         except TypeError:
             return ''
