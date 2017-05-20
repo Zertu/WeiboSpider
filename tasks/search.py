@@ -6,6 +6,7 @@ from page_get.basic import get_page
 from config.conf import get_max_search_page
 from page_parse import search as parse_search
 from db.search_words import get_search_keywords
+from db.keywords_wbdata import insert_keyword_wbid
 from db.wb_data import insert_weibo_data, get_wb_by_mid
 
 # 只抓取原创微博，默认是按照时间进行排序，如果只抓首页，那么就不需要登录
@@ -14,7 +15,7 @@ limit = get_max_search_page() + 1
 
 
 @app.task(ignore_result=True)
-def search_keyword(row):
+def search_keyword(keyword, keyword_id):
     cur_page = 1
     keyword = row.keyword
     if row.startTime:
@@ -44,6 +45,7 @@ def search_keyword(row):
                 return
             else:
                 insert_weibo_data(wb_data)
+                insert_keyword_wbid(keyword_id, wb_data.weibo_id)
                 # 这里暂时使用网络调用而非本地调用，权衡两种方法的好处
                 app.send_task('tasks.user.crawl_person_infos', args=(wb_data.uid,), queue='user_crawler',
                               routing_key='for_user_info')
@@ -58,6 +60,7 @@ def search_keyword(row):
 
 @app.task(ignore_result=True)
 def excute_search_task():
+<<<<<<< HEAD
     # keyword应该从数据库中读取出来
     rows = get_search_keywords()
     for row in rows:
@@ -66,3 +69,9 @@ def excute_search_task():
     #     search_keyword(each[0])
         # app.send_task('tasks.search.search_keyword', args=(each[0],), queue='search_crawler',
         #               routing_key='for_search_info')
+=======
+    keywords = get_search_keywords()
+    for each in keywords:
+        app.send_task('tasks.search.search_keyword', args=(each[0], each[1]), queue='search_crawler',
+                      routing_key='for_search_info')
+>>>>>>> 33e5bc4950e5a2f75b12760d8fa1f60453ad1b26

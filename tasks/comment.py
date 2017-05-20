@@ -42,5 +42,6 @@ def excute_comment_task():
     # 只解析了根评论，而未对根评论下的评论进行抓取，如果有需要的同学，可以适当做修改
     weibo_datas = wb_data.get_weibo_comment_not_crawled()
     for weibo_data in weibo_datas:
-        app.send_task('tasks.comment.crawl_comment_page', args=(weibo_data.weibo_id,), queue='comment_crawler',
-                      routing_key='comment_info')
+        crawl_comment_page(weibo_data.weibo_id)
+        # app.send_task('tasks.comment.crawl_comment_page', args=(weibo_data.weibo_id,), queue='comment_crawler',
+        #               routing_key='comment_info')
