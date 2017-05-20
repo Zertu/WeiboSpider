@@ -60,18 +60,7 @@ def search_keyword(keyword, keyword_id):
 
 @app.task(ignore_result=True)
 def excute_search_task():
-<<<<<<< HEAD
-    # keyword应该从数据库中读取出来
-    rows = get_search_keywords()
-    for row in rows:
-        search_keyword(row)
-
-    #     search_keyword(each[0])
-        # app.send_task('tasks.search.search_keyword', args=(each[0],), queue='search_crawler',
-        #               routing_key='for_search_info')
-=======
     keywords = get_search_keywords()
     for each in keywords:
         app.send_task('tasks.search.search_keyword', args=(each[0], each[1]), queue='search_crawler',
                       routing_key='for_search_info')
->>>>>>> 33e5bc4950e5a2f75b12760d8fa1f60453ad1b26
